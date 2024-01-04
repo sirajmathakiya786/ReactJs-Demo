@@ -14,6 +14,7 @@ import Product from './components/Product/Product';
 import ProductList from './components/Product/ProductList';
 import ForgotPassword from './components/User/ForgotPassword';
 import VerifyOTP from './components/User/VerifyOTP';
+import UpdatePassword from './components/User/UpdatePassword';
 
 function App() {
   return (
@@ -27,9 +28,10 @@ function App() {
         <Route path='/product-list' element={<ProductList />} />
         <Route path='/user' element={<UserList />} />
         <Route path='/add-user' element={<UserAdd />} />
-        <Route path='/edit-user/:userId' element={<UserEdit />} />
+        <Route path='/edit-user' element={<UserEdit />} />
         <Route path="/forgot-password" element={<ForgotPassword />}/>
         <Route path='/verify-otp' element={<VerifyOTP />} />
+        <Route path='/update-password' element={<UpdatePassword />} />
       </Routes>
     </>
   )  

@@ -1,11 +1,45 @@
 import React, { useState } from "react";
 import Header from "../Header"; // Make sure to import Header component
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import axiosInstance from "../../config/axiosInstance";
 import { toast } from "react-toastify";
 import { useParams } from 'react-router-dom';
 
 export default function UserEdit() {
+  const {userData} = useLocation().state || {};
+  
+  const [formData, setFormData] = useState({
+    firstName: userData?.firstName || '',
+    lastName: userData?.lastName || '',
+    email: userData?.email || '',
+    phoneNumber: userData?.phoneNumber || '',
+  })
+
+  const handleChange = (e) =>{
+    setFormData({
+        ...formData,
+        [e.target.name]: e.target.value
+    });
+  }
+
+  const handleSubmit = async(e)=>{
+    e.preventDefault();
+    try {
+      const data = {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        phoneNumber: formData.email,
+      }
+
+      const response = await axiosInstance.patch(`users/update/${userData._id}`, data);
+      if(response.status === 200){
+        toast.success(response.data.message)
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
   
   return (
     <>
@@ -13,7 +47,7 @@ export default function UserEdit() {
       <div className="container" style={{ marginTop: '100px' }}>
         <div className="row justify-content-center">
           <div className="col-md-6">
-            <form >
+            <form onSubmit={handleSubmit}>
               <div className="mb-3">
                 <label htmlFor="firstname" className="form-label">
                   FirstName
@@ -23,6 +57,8 @@ export default function UserEdit() {
                   className= "form-control"
                   id="firstName"
                   name="firstName"
+                  value={formData.firstName}
+                  onChange={handleChange}
                   placeholder="Enter your FirstName"
                 />
               </div>
@@ -35,6 +71,8 @@ export default function UserEdit() {
                   className="form-control"
                   id="lastName"
                   name="lastName"
+                  value={formData.lastName}
+                  onChange={handleChange}
                   placeholder="Enter your LastName"
                 />
               </div>
@@ -47,6 +85,8 @@ export default function UserEdit() {
                   className="form-control"
                   id="email"
                   name="email"
+                  value={formData.email}
+                  onChange={handleChange}
                   placeholder="Enter your Email"
                 />
               </div>
@@ -59,6 +99,8 @@ export default function UserEdit() {
                   className="form-control"
                   id="phoneNumber"
                   name="phoneNumber"
+                  value={formData.phoneNumber}
+                  onChange={handleChange}
                   placeholder="Enter your PhoneNumber"
                 />
               </div>               

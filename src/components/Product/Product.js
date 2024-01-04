@@ -109,6 +109,17 @@ export default function AddProduct() {
     }
   };
 
+  const handleCancel = ()=>{
+    setFormData({
+      productName: '',
+    description: '',
+    date: null,
+    reviews: '',
+    price: '',
+    stock: '',
+    })
+  }
+
   return (
     <>
       <Header />
@@ -219,7 +230,7 @@ export default function AddProduct() {
                 <button type="submit" className="btn btn-success">
                   Submit
                 </button>
-                <Link to="/dashboard" style={{ marginLeft: '10px' }} className="btn btn-danger">
+                <Link to="" style={{ marginLeft: '10px' }} className="btn btn-danger" onClick={handleCancel}>
                   Cancel
                 </Link>
                 <Link to="/product-list" style={{ marginLeft: '10px' }} className="btn btn-primary">

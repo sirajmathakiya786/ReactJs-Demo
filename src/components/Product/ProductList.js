@@ -65,13 +65,16 @@ export default function ProductList() {
             product._id === productId
               ? {
                   ...product,
-                  userAction: isLike ? "like" : "dislike", // Track user action
+                  userAction: isLike ? "like" : "dislike",
                 }
               : product
-
           );
-          
         });
+        if(response.data.data.isLike === true ){
+          toast.success(response.data.message)
+        }else if(response.data.data.isLike === false){
+          toast.error(response.data.message)
+        }
       }else{
         console.error("Failed to update like/dislike");
       }

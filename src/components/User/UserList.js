@@ -8,7 +8,8 @@ import { FaEdit } from "react-icons/fa";
 export default function UserList() {
   let navigate = useNavigate();
   const [userList, setUserList] = useState([]);
-    
+  const [userPassword, setUserPassword] = useState("someInitialValue");
+
   const fetchUser = async () => {
     try {
       const response = await axiosInstance.get("users/get-user");
@@ -21,20 +22,27 @@ export default function UserList() {
     fetchUser();
   }, []);
 
-  const handleEdit = async(userId,userData) =>{
-    console.log(`edit user ${userId}`);
-    navigate(`/edit-user/${userId}`, { state: { userData } });
+  const handleEdit = async(userData) =>{
+    navigate(`/edit-user`, { state: { userData } });
+    console.log(userData);
   }
 
-  
+  // const handleUpdatePassword = (userId) => {
+  //   navigate(`/update-password/${userId}`);
+  //   onClick={() => handleUpdatePassword(userId)}
+  // };
+
   return (
     <>
       <Header />
       <div className="container mt-4">
         <h2 className="mb-4">User List</h2>
         <div className="d-flex justify-content-end mb-3">
-        <Link to={"/add-user"} variant="primary">
+        <Link to={"/add-user"} className="mr-2">
           <Button variant="primary">Add User</Button>
+        </Link>
+        <Link to="/update-password"  className="ml-2">
+          <Button variant="info">Update Password</Button> 
         </Link>
       </div>
 
@@ -47,6 +55,7 @@ export default function UserList() {
               <th>Email</th>
               <th>PhoneNumber</th>
               <th>Rewards</th>
+              <th>Image</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -61,7 +70,16 @@ export default function UserList() {
                       <td>{user.email}</td>
                       <td>{user.phoneNumber}</td>
                       <td>{user.rewards}</td>
-                      <td><span className="edit-icon" onClick={()=> handleEdit(user._id,user)} style={{ cursor: 'pointer' }}><FaEdit/></span></td>
+                      <td>
+                        {user.profileImage && (
+                          <img
+                            src={`http://localhost:6060/images/${user.profileImage}`} 
+                            style={{ width: '50px', height: '50px', objectFit: 'cover'}}
+                            className="profile-image"
+                          />
+                        )}
+                      </td>
+                      <td><span className="edit-icon" onClick={()=> handleEdit(user)} style={{ cursor: 'pointer' }}><FaEdit/></span></td>
                     </tr>
                   );
                 })
